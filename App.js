@@ -1,5 +1,5 @@
 import React , {Component} from 'react';
-import { StyleSheet, Text, View,TouchableOpacity,Alert,Button } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity,Alert,Button,ScrollView } from 'react-native';
 import {MaterialCommunityIcons as Icon} from 'react-native-vector-icons'
 // import { render } from 'react-dom';
 
@@ -16,7 +16,16 @@ export default class App extends React.Component {
   
       ],
       currentPlayer: 1,
-      }
+      
+          history: [
+              [0,0,0],
+              [0,0,0],
+              [0,0,0]
+        
+            ],
+          
+        };
+
     }
 
   componentDidMount(){
@@ -34,6 +43,10 @@ export default class App extends React.Component {
  });
  
   }
+
+  // onGoPress=(i)=>{
+  //   this.setState({gameState: history[i]})
+  // }
 
   onNewGamePress=()=>{
     this.initializeGame();
@@ -86,7 +99,7 @@ export default class App extends React.Component {
 
    onTilePress=(row,col)=> {
       var currentPlayer= this.state.currentPlayer;
-
+      
       var value=this.state.gameState[row][col];
       if(value!==0){
         return;
@@ -94,8 +107,11 @@ export default class App extends React.Component {
 
       var arr=this.state.gameState.slice();
       arr[row][col]= currentPlayer;
-      this.setState({gameState :arr});
+      this.setState(prevState => ({
+        history: [...prevState.history, {arr}]
+      }))
 
+      this.setState({gameState :arr});
       var nextPlayer=(currentPlayer==1)?-1:1
       this.setState({currentPlayer:nextPlayer});
 
@@ -122,7 +138,9 @@ export default class App extends React.Component {
 
 
   render(){
+    
   return (
+    <ScrollView style={{marginTop:50}}>
     <View style={styles.container}>
     <Text style={{fontSize:60, fontStyle:'italic',paddingBottom:30}}>TIC TAC TOE</Text>
       <View style={{flexDirection:'row'}} >
@@ -159,9 +177,19 @@ export default class App extends React.Component {
         </TouchableOpacity>
       </View>
       <View style={{paddingTop:80}}></View>
-      <Button title="New Game" onPress={this.onNewGamePress } />
+      <View style={styles.button}><Button title="NEW GAME " onPress={this.onNewGamePress } /></View>
+      {/* <View style={styles.button}><Button title="Go to move no: 1" onPress={this.onGoPress() } /></View>/ */}
+      <View style={styles.button}><Button title="Go to move no: 2" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 3" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 4" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 5" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 6" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 7" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 8" onPress={this.onNewGamePress() } /></View>
+      <View style={styles.button}><Button title="Go to move no: 9" onPress={this.onNewGamePress() } /></View>
 
     </View>
+    </ScrollView>
   );
 }
 }
@@ -194,5 +222,9 @@ const styles = StyleSheet.create({
     alignItems:"center",
     flex:1,
     padding:15
+  },
+  button:{
+    padding:10,
+    margin:5
   }
 });
